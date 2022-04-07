@@ -46,8 +46,8 @@ const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 const initGameGrid = () => {
     let index = 0;
 
-    for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE,2); i++) {
-        let row = Math.floor(i/CONSTANT.GRID_SIZE);
+    for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
+        let row = Math.floor(i / CONSTANT.GRID_SIZE);
         let col = i % CONSTANT.GRID_SIZE;
         if (row === 2 || row === 5) cells[index].style.marginBottom = '10px';
         if (col === 2 || col === 5) cells[index].style.marginRight = '10px';
@@ -86,8 +86,13 @@ const initSudoku = () => {
     for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
         let row = Math.floor(i / CONSTANT.GRID_SIZE);
         let col = i % CONSTANT.GRID_SIZE;
-        
+
         cells[i].setAttribute('data-value', su.question[row][col]);
+        cells.forEach((e, index) => {
+            if (e.getAttribute('data-value') > 0) {
+                e.innerHTML = `<img src="./static/images/${e.getAttribute('data-value')}.png" width="20" height="20" alt="">`;
+            }
+        })
 
         if (su.question[row][col] !== 0) {
             cells[i].classList.add('filled');
@@ -114,7 +119,7 @@ const loadSudoku = () => {
     for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
         let row = Math.floor(i / CONSTANT.GRID_SIZE);
         let col = i % CONSTANT.GRID_SIZE;
-        
+
         cells[i].setAttribute('data-value', su_answer[row][col]);
         cells[i].innerHTML = su_answer[row][col] !== 0 ? su_answer[row][col] : '';
         if (su.question[row][col] !== 0) {
@@ -134,6 +139,7 @@ const hoverBg = (index) => {
         for (let j = 0; j < CONSTANT.BOX_SIZE; j++) {
             let cell = cells[9 * (box_start_row + i) + (box_start_col + j)];
             cell.classList.add('hover');
+
         }
     }
 
@@ -150,13 +156,13 @@ const hoverBg = (index) => {
     }
 
     step = 1;
-    while (index - step >= 9*row) {
+    while (index - step >= 9 * row) {
         cells[index - step].classList.add('hover');
         step += 1;
     }
 
     step = 1;
-     while (index + step < 9*row + 9) {
+    while (index + step < 9 * row + 9) {
         cells[index + step].classList.add('hover');
         step += 1;
     }
@@ -205,13 +211,13 @@ const checkErr = (value) => {
     }
 
     step = 1;
-    while (index - step >= 9*row) {
+    while (index - step >= 9 * row) {
         addErr(cells[index - step]);
         step += 1;
     }
 
     step = 1;
-    while (index + step < 9*row + 9) {
+    while (index + step < 9 * row + 9) {
         addErr(cells[index + step]);
         step += 1;
     }
@@ -264,6 +270,8 @@ const initNumberInputEvent = () => {
                 setTimeout(() => {
                     cells[selected_cell].classList.remove('zoom-in');
                 }, 500);
+
+
 
                 // check game win
                 if (isGameWin()) {
