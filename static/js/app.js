@@ -122,8 +122,10 @@ const loadSudoku = () => {
 
         cells[i].setAttribute('data-value', su_answer[row][col]);
         cells[i].innerHTML = su_answer[row][col] !== 0 ? su_answer[row][col] : '';
+
         if (su.question[row][col] !== 0) {
             cells[i].classList.add('filled');
+
         }
     }
 }
@@ -139,6 +141,7 @@ const hoverBg = (index) => {
         for (let j = 0; j < CONSTANT.BOX_SIZE; j++) {
             let cell = cells[9 * (box_start_row + i) + (box_start_col + j)];
             cell.classList.add('hover');
+
 
         }
     }
@@ -255,8 +258,12 @@ const initNumberInputEvent = () => {
     number_inputs.forEach((e, index) => {
         e.addEventListener('click', () => {
             if (!cells[selected_cell].classList.contains('filled')) {
-                cells[selected_cell].innerHTML = index + 1;
                 cells[selected_cell].setAttribute('data-value', index + 1);
+                cells[selected_cell].innerHTML = `<img src="./static/images/${index + 1}.png" width="20" height="20" alt="">`;
+
+
+
+
                 // add to answer
                 let row = Math.floor(selected_cell / CONSTANT.GRID_SIZE);
                 let col = selected_cell % CONSTANT.GRID_SIZE;
